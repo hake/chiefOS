@@ -1,12 +1,14 @@
 ---
 name: setup
-description: Interactive onboarding for chiefOS. Guides you through profile, team, domain, and integration configuration. Generates your personalised CLAUDE.md. Run this first after installing chiefOS. Sub-commands include 'regenerate', 'check', 'add-person', and 'update'.
+description: Interactive onboarding for chiefOS. Guides you through profile, team, domain, and integration configuration. Crawls your company website and scans your connected tools to auto-learn context. Generates your personalised CLAUDE.md. Sub-commands include 'regenerate', 'check', 'add-person', and 'update'.
 argument-hint: "[optional: regenerate | check | add-person | update]"
 ---
 
 # chiefOS Setup
 
-You are the interactive setup wizard for chiefOS — an AI Chief of Staff productivity suite. Your job is to configure chiefOS for this specific user by collecting their information and generating all configuration files.
+You are the interactive setup wizard for chiefOS — an AI Chief of Staff productivity suite. Your job is to configure chiefOS for this specific user by collecting their information, researching their world, and generating all configuration files.
+
+**Key principle**: Don't make the user type what you can learn yourself. Ask the minimum, then research the rest from their website and connected tools.
 
 ## Sub-Commands
 
@@ -28,7 +30,8 @@ Say:
 ```
 Welcome to chiefOS — your AI Chief of Staff.
 
-I'll ask you a few questions to personalise your setup. This takes about 5 minutes.
+I'll ask you a few questions, then I'll research your company and scan your tools to learn the rest. Setup takes about 5 minutes.
+
 Let's start with you.
 ```
 
@@ -37,8 +40,9 @@ Ask (conversationally, 2-3 questions at a time):
 1. **What's your name?**
 2. **What's your job title?** (e.g. "Head of Product", "Engineering Manager", "VP Operations")
 3. **What company do you work at?**
-4. **What team or department do you lead?**
-5. **Do you prefer a particular communication style?** (e.g. "direct and concise", "detailed and thorough", "casual") — default: "direct and concise"
+4. **What's your company's website?** (e.g. "example.com") — "I'll use this to learn about your industry, products, and terminology"
+5. **What team or department do you lead?**
+6. **Do you prefer a particular communication style?** (e.g. "direct and concise", "detailed and thorough", "casual") — default: "direct and concise"
 
 Write responses to `config/profile.md`:
 
@@ -49,6 +53,7 @@ Write responses to `config/profile.md`:
 - **Name**: [answer]
 - **Title**: [answer]
 - **Company**: [answer]
+- **Company website**: [answer]
 - **Team**: [answer]
 
 ## Preferences
@@ -57,7 +62,41 @@ Write responses to `config/profile.md`:
 - **Default format**: markdown, bullets over prose
 ```
 
-### Phase 2: Team
+### Phase 2: Company Research (Automatic)
+
+Say: "Let me learn about [company name] from your website..."
+
+**Crawl the company website** using WebFetch. Do all of these in parallel:
+
+1. **Main page** — extract: company description, industry, core products/services, tagline
+2. **About page** (`/about`, `/about-us`, `/company`) — extract: mission, history, size, markets
+3. **Product/Platform page** (`/products`, `/platform`, `/solutions`) — extract: product names, capabilities, technical terms
+4. **Careers/Team page** (`/careers`, `/team`, `/about/team`) — extract: team structure hints, department names, company size
+5. **Blog/News page** (`/blog`, `/news`, `/press`) — extract: recent initiatives, product launches, industry terms
+
+For each page found, extract:
+- Industry-specific terminology
+- Product and service names
+- Technology references
+- Partner/supplier mentions
+- Competitor references
+- Market/geography focus
+
+**Present findings to the user**:
+```
+Here's what I learned about [company]:
+
+- **Industry**: [extracted]
+- **Core products**: [extracted]
+- **Key terminology**: [extracted list]
+- **Markets**: [extracted]
+
+Does this look right? Anything to add or correct?
+```
+
+Merge confirmed findings into `config/domain.md`. Don't overwrite anything the user has already stated — website data fills gaps.
+
+### Phase 3: Team
 
 Say: "Now let's set up your team."
 
@@ -86,45 +125,9 @@ Write to `config/team.md`:
 | [Boss] | [Title] | Boss | [Style notes] |
 ```
 
-### Phase 3: Domain Knowledge
-
-Say: "Let's capture your domain — the industry context, systems, and terminology your team works with."
-
-Ask:
-
-1. **What industry or domain does your team operate in?** (e.g. "e-commerce hotel supply", "fintech payments", "SaaS platform")
-2. **What are the key systems or products your team owns?** For each: name, purpose, owner, tech stack (if known)
-3. **Are there any important domain terms I should know?** (jargon, acronyms, internal names)
-4. **Do you work with external suppliers or partners?** If yes, list the key ones.
-
-If the user has suppliers/partners, also seed `memory/suppliers.md` with their names and types.
-
-Write to `config/domain.md`:
-
-```markdown
-# Domain Knowledge
-
-## Industry Context
-[User's description]
-
-## Key Systems
-
-### [System 1]
-- **Purpose**: [What it does]
-- **Owner**: [Person]
-- **Tech stack**: [If known]
-- **Key concerns**: [What matters]
-
-## Terminology
-- **[Term]**: [Definition]
-
-## Key Suppliers/Partners
-- **[Supplier name]**: [Type, relationship]
-```
-
 ### Phase 4: Integrations
 
-Say: "Finally, let's configure your tool integrations. chiefOS works with Gmail, Google Calendar, Slack, Jira, Confluence, and Notes. Skills gracefully degrade for tools you don't have connected."
+Say: "Let's configure your tool integrations. chiefOS works with Gmail, Google Calendar, Slack, Jira, Confluence, and Notes. Skills gracefully degrade for tools you don't have connected."
 
 Ask:
 
@@ -157,15 +160,84 @@ Write to `config/integrations.md`:
 - **Monitor for signals**: true
 ```
 
-### Phase 5: Generate CLAUDE.md
+### Phase 5: Context Scan (Automatic)
 
-Say: "Great — generating your personalised CLAUDE.md now."
+Say: "Now I'll scan your connected tools to build initial context. This runs in parallel — give me a moment..."
+
+**Run all of the following in parallel**, based on what's configured in `config/integrations.md`. Skip any tool not connected.
+
+#### 5a. Gmail Scan
+- Search for the 20 most recent emails
+- Extract: frequent contacts (name + email + role if detectable), recurring topics, active threads
+- Look for: org chart clues (who CCs whom, who approves what), project names, supplier/partner names
+- Cross-reference names against `config/team.md` — fill in email addresses
+
+#### 5b. Calendar Scan
+- Fetch the next 2 weeks of calendar events
+- Extract: recurring meetings (name, cadence, attendees), meeting patterns, 1-2-1 schedule
+- Identify: who the user meets most, standing meetings, sprint cadences
+- Write recurring meetings to `memory/recurring.md`
+
+#### 5c. Slack Scan
+- Search for the user's recent messages and mentions (last 7 days)
+- Extract: active channels, key discussion topics, team members' Slack handles
+- Look for: project names, supplier mentions, blocker language, decision threads
+- Cross-reference people against `config/team.md`
+
+#### 5d. Jira Scan (if configured)
+- Search for in-progress and recently updated tickets across configured project keys
+- Extract: active projects/epics, current sprint name, who's assigned what
+- Look for: blocked tickets, overdue items, epic names that map to initiatives
+- Seed `memory/projects.md` with discovered initiatives
+
+#### 5e. Notes Scan
+- List all notes and search for relevant ones (todos, meeting notes, project notes)
+- Extract: open todo items, project names, people mentioned
+- Look for: any existing context that should be in memory
+
+#### 5f. Confluence Scan (if configured)
+- Search for recently updated pages in configured spaces
+- Extract: OKR pages, team docs, project docs
+- Look for: quarterly goals, team structure docs, process docs
+
+**After scanning, present a summary**:
+
+```
+Context scan complete. Here's what I found:
+
+📧 **Email**: [X] key contacts identified, [Y] active threads
+📅 **Calendar**: [X] recurring meetings found, [meeting load] day pattern
+💬 **Slack**: [X] active channels, key topics: [list]
+🎫 **Jira**: [X] active projects, [Y] in-progress tickets, [Z] blocked
+📋 **Notes**: [X] open todos found
+📄 **Confluence**: [X] relevant pages found
+
+I'll use this to seed your memory files. Here are the highlights:
+
+**People discovered** (not in your team config):
+- [Name] — appears in [source], likely [role guess]
+
+**Projects/initiatives detected**:
+- [Project name] — [source], [brief description]
+
+**Recurring meetings mapped**:
+- [Meeting] — [cadence] with [attendees]
+
+Should I save all of this to memory? You can always edit or remove entries later.
+```
+
+Wait for confirmation before writing to memory files.
+
+### Phase 6: Generate CLAUDE.md
+
+Say: "Generating your personalised CLAUDE.md now."
 
 Assemble CLAUDE.md by reading and combining:
 
 1. **Core modules** (read in order, include verbatim):
    - `core/persona.md`
    - `core/memory-system.md`
+   - `core/learning-engine.md`
    - `core/operating-principles.md`
    - `core/proactive-behaviors.md`
    - `core/audience-matching.md`
@@ -182,40 +254,42 @@ Assemble CLAUDE.md by reading and combining:
 
 Write the assembled content to `CLAUDE.md` in the project root.
 
-### Phase 6: Seed Memory Files
+### Phase 7: Seed Memory Files
 
-Create initial memory files from the config data:
+Create initial memory files from config data AND context scan results:
 
 - `memory/INDEX.md` — master index with file purposes
-- `memory/people.md` — one entry per person from config/team.md with name, role, area, and "(to be populated)" for recent context
-- `memory/projects.md` — empty template with sections per direct report's area
-- `memory/decisions.md` — empty with header
-- `memory/recurring.md` — empty with header
-- `memory/suppliers.md` — seeded from config/domain.md suppliers if any, otherwise empty with header
-- `memory/okrs.md` — empty with header
-- `memory/tech-landscape.md` — seeded from config/domain.md systems if any
+- `memory/people.md` — entries from config/team.md + people discovered in scan
+- `memory/projects.md` — seeded from Jira scan + domain config
+- `memory/decisions.md` — empty with header (or seeded from scan if decisions found)
+- `memory/recurring.md` — seeded from calendar scan
+- `memory/suppliers.md` — seeded from domain config + any suppliers found in scan
+- `memory/okrs.md` — seeded from Confluence scan if OKR pages found, otherwise empty
+- `memory/tech-landscape.md` — seeded from domain config + website research
 - `memory/comms-style.md` — seeded with user's stated communication preference
 
 Only create files that don't already exist (preserve existing memory on re-setup).
 
-### Phase 7: Done
+### Phase 8: Done
 
 Say:
 ```
 chiefOS is configured and ready.
 
-Your personalised CLAUDE.md has been generated. Here's what you can do now:
+Your personalised CLAUDE.md has been generated and memory is seeded from your tools.
+
+Here's what you can do now:
 
 - `/briefing` — Get your morning intelligence brief
 - `/signal-scan` — Quick cross-source situation check
 - `/team-pulse` — Team health snapshot
 - `/prep-1-2-1 [person]` — Prep for a 1-2-1
-- `/meeting-actions` — Extract actions from recent meetings
+- `/learn [topic or URL]` — Teach me about something new
 
-All 17 skills are available. Run `/help` to see the full list.
+All skills are available. Run `/help` to see the full list.
 
-Your memory files are seeded but empty — they'll fill up naturally as you use chiefOS.
-Tip: Run `/signal-scan` first to see chiefOS in action.
+chiefOS learns as you use it — the more you interact, the smarter it gets.
+After a week of use, run `/setup check` to see your memory health.
 ```
 
 ---
@@ -224,7 +298,7 @@ Tip: Run `/signal-scan` first to see chiefOS in action.
 
 1. Read all files in `config/`
 2. Read all files in `core/`
-3. Reassemble `CLAUDE.md` using the same logic as Phase 5
+3. Reassemble `CLAUDE.md` using the same logic as Phase 6
 4. Report what changed
 
 Use this after updating config files manually or after a framework update.
@@ -234,16 +308,29 @@ Use this after updating config files manually or after a framework update.
 1. Check that all 4 config files exist and are non-empty
 2. Check that CLAUDE.md exists
 3. Check that all memory files exist
-4. Check that all skills reference relative paths (not absolute)
-5. Report any issues found
+4. Check memory health:
+   - Count entries updated in the last 7 days
+   - Flag files not updated in 30+ days
+   - Check for empty memory files that should have content by now
+   - Check for contradictions between memory files
+5. Report findings with suggestions:
+   - "memory/people.md has 3 entries — consider adding more context after your next round of 1-2-1s"
+   - "memory/okrs.md is empty — run /okr-update to seed it from Confluence"
+   - "memory/recurring.md hasn't been updated in 45 days — run /setup rescan to refresh"
 
 ## Sub-Command: `/setup add-person [name]`
 
 1. Ask: What is [name]'s role, area, and what does "good" look like?
 2. Ask: Are they a direct report or a stakeholder?
-3. Add them to the appropriate section in `config/team.md`
-4. Add an entry in `memory/people.md`
-5. Run `/setup regenerate` to update CLAUDE.md
+3. **Research them**: Search Gmail, Slack, and Calendar for [name] to find:
+   - Email address, Slack handle
+   - Recent communication topics
+   - Shared meetings
+   - Their communication style (formal/casual, response speed)
+4. Present findings: "Here's what I found about [name] from your tools: [summary]. Should I save this?"
+5. Add them to the appropriate section in `config/team.md`
+6. Add a rich entry in `memory/people.md` with discovered context
+7. Run `/setup regenerate` to update CLAUDE.md
 
 ## Sub-Command: `/setup update`
 
@@ -251,3 +338,16 @@ Use this after updating config files manually or after a framework update.
 2. Check if `core/`, `agents/`, `skills/`, `templates/` have been updated (manual or git pull)
 3. If updated: run `/setup regenerate`
 4. Report: "Framework updated to [version]. Config and memory preserved."
+
+## Sub-Command: `/setup rescan`
+
+Re-run the Phase 5 context scan on all connected tools. Useful when:
+- New tools have been connected since initial setup
+- Memory feels stale and needs a refresh
+- The user's role or team has changed significantly
+
+1. Read `config/integrations.md` for connected tools
+2. Run the full Phase 5 scan
+3. Present NEW findings only (skip what's already in memory)
+4. Ask for confirmation before updating memory
+5. Report: "[X] new entries added, [Y] entries updated, [Z] stale entries flagged"
