@@ -1,7 +1,6 @@
 ---
 name: setup
 description: Interactive onboarding for chiefOS. Guides you through profile, team, domain, and integration configuration. Generates your personalised CLAUDE.md. Run this first after installing chiefOS. Sub-commands include 'regenerate', 'check', 'add-person', and 'update'.
-disable-model-invocation: true
 argument-hint: "[optional: regenerate | check | add-person | update]"
 ---
 

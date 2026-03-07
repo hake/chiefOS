@@ -1,7 +1,6 @@
 ---
 name: briefing
 description: Morning intelligence brief — calendar, emails, Slack signals, Jira blockers, OKR pulse, supplier health, team pulse, open decisions, open todos, and a ranked focus list. Use when starting the day or when the user wants a status overview.
-disable-model-invocation: true
 ---
 
 # Morning Briefing

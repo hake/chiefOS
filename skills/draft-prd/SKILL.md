@@ -1,7 +1,6 @@
 ---
 name: draft-prd
 description: Draft a Product Requirements Document (PRD) for a new feature or initiative. Guides the user through requirements gathering and produces a structured PRD in markdown.
-disable-model-invocation: true
 argument-hint: "[feature or initiative name]"
 ---
 
