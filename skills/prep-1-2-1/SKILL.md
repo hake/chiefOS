@@ -1,12 +1,12 @@
 ---
-name: meeting-prep
+name: prep-1-2-1
 description: >
-  This skill provides the workflow and templates for preparing 1-2-1 meeting notes.
-  Use when the user says "prep my 1-2-1", "prepare meeting notes", "get ready for
-  my 1:1 with [person]", "1-2-1 with [name]", or runs the /prep-1-2-1 command.
-  Also triggers when the user asks about meeting prep best practices or wants to
-  improve their 1-2-1 format.
-version: 0.1.0
+  Prepare for a 1-2-1 meeting with any person. Searches past meeting notes in your
+  configured notes app, pulls open actions from memory, scans Slack and email for
+  fresh context, and generates a pre-populated agenda. Use when the user says
+  "prep my 1-2-1", "prepare meeting notes", "get ready for my 1:1 with [person]",
+  "1-2-1 with [name]", or runs the /prep-1-2-1 command.
+argument-hint: "[person name]"
 ---
 
 # Meeting Prep — 1-2-1 Workflow
@@ -16,12 +16,13 @@ version: 0.1.0
 Before preparing, read:
 - `config/team.md` — direct reports (names, areas, "what good looks like") and stakeholders
 - `config/profile.md` — user's name for doc titles
+- `config/integrations.md` — check `notes_app` value for where meeting notes are stored
 
 Use these to identify the person being prepped for and their context.
 
 ## Meeting Notes Template
 
-Every 1-2-1 Google Doc follows this structure (read user's name from `config/profile.md`):
+Every 1-2-1 note follows this structure (read user's name from `config/profile.md`):
 
 ```
 # 1:1 [User Name] × [Person] — [DD MMM YYYY]
@@ -54,9 +55,12 @@ Every 1-2-1 Google Doc follows this structure (read user's name from `config/pro
 
 ## How to Find Past Meeting Notes
 
+Read `config/integrations.md` for the `notes_app` value, then use `core/notes-integration.md` for the correct search tool.
+
 Search order:
-1. **Google Docs** — Search for: `1:1 [user name] [person name]` or `1-2-1 [person name]`
-2. If no structured notes exist, check Slack DMs with the person for informal follow-ups
+1. **Notes app** — Search for: `1:1 [user name] [person name]` or `1-2-1 [person name]` (skip if `notes_app` is `none`)
+2. **Memory** — Check `memory/people.md` for open actions and recent context on this person
+3. If no structured notes exist, check Slack DMs with the person for informal follow-ups
 
 ## Action Item Detection
 
@@ -79,4 +83,4 @@ Priority order:
 
 ## Naming Convention
 
-Google Doc title: `1:1 [User Name] × [Person] — [DD MMM YYYY]`
+Note title: `1:1 [User Name] × [Person] — [DD MMM YYYY]`
