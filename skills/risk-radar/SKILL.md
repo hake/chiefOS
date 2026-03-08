@@ -81,5 +81,13 @@ Risk severity:
 ### 6. Memory Update Proposal
 Offer to update `memory/projects.md` with any new risks found.
 
+### 7. Archive Report
+
+After presenting, save a copy for future reference:
+
+1. Write the full formatted risk radar to `reports/risk-radar/YYYY-MM-DD.md` (using today's date)
+2. If a report already exists for today, overwrite it with the latest version
+3. Confirm: "Report saved to `reports/risk-radar/YYYY-MM-DD.md`"
+
 ## Trigger Phrases
 "risk radar", "risk check", "what's blocked", "blockers", "risk register", "what might derail us"

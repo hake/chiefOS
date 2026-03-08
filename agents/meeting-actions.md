@@ -19,7 +19,7 @@ Skip any not configured in `config/integrations.md`:
 - Google Calendar MCP (list recent past events to identify which meetings happened)
 - Gmail MCP (search for meeting follow-up emails, shared notes)
 - Slack MCP (search for post-meeting threads, action summaries)
-- Notes app MCP (read existing todos, create new todos)
+- Notes app MCP — read `config/integrations.md` for `notes_app` value, then use `core/notes-integration.md` for correct tool names (read existing todos, create new todos). Skip if `notes_app` is `none`.
 - File Read/Write for `memory/people.md` (to update open actions per person)
 
 ## Scanning Instructions
@@ -78,7 +78,7 @@ Urgency rules:
 
 ### Step 5: Add to todos
 For items classified as "direct" or "delegate":
-- Add to the Notes app as todos
+- Add to the configured notes app as todos (use `core/notes-integration.md` for the correct tool; skip if `notes_app` is `none`)
 - Format: `[Meeting: title] Action description (deadline if known)`
 - For delegate items, prefix with the owner's name: `[Delegate → Person] Action`
 

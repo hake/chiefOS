@@ -35,7 +35,7 @@ feature" -- instead confirm your understanding and move to "why."
 ### Phase 2: Research (Optional)
 
 If relevant, check:
-- Notes app for any existing notes on this topic (use search_notes)
+- Notes app for any existing notes on this topic (read `config/integrations.md` for the `notes_app` value, then use `core/notes-integration.md` for the correct search tool; skip if `notes_app` is `none`)
 - Recent emails for context on this initiative (use gmail search)
 - Any related docs in Google Drive
 
@@ -116,7 +116,7 @@ After generating the draft:
 2. Ask "What would you change, add, or remove?"
 3. Iterate until satisfied
 4. Offer to save it:
-   - As a note in the notes app (using create_note)
+   - As a note in the configured notes app (use `core/notes-integration.md` for the correct create tool; skip if `notes_app` is `none`)
    - As a Google Doc
    - Output as raw markdown for copy-paste
 

@@ -56,5 +56,13 @@ Overall: 🟢/🟡/🔴
 ### 4. Flag Escalations
 If any KR moved to Off Track, proactively say: "Consider flagging this to your boss — run `/stakeholder-brief [OKR topic]` to prepare an update."
 
+### 5. Archive Report
+
+After presenting, save a copy for future reference:
+
+1. Write the full formatted OKR dashboard to `reports/okr-updates/YYYY-MM-DD.md` (using today's date)
+2. If a report already exists for today, overwrite it with the latest version
+3. Confirm: "Report saved to `reports/okr-updates/YYYY-MM-DD.md`"
+
 ## Trigger Phrases
 "okr update", "OKR status", "how are we doing on OKRs", "quarterly status", "OKR check"

@@ -34,7 +34,15 @@ After presenting, offer:
 - "Shall I update `projects.md` with the status changes I found?"
 - "Shall I update `people.md` with any team signals worth persisting?"
 
-### 5. Monday Framing (if run on Monday)
+### 5. Archive Report
+
+After presenting, save a copy to the reports archive (in addition to the memory copy saved by the sub-agent):
+
+1. Write the full formatted retrospective to `reports/weekly-retros/YYYY-WNN.md` (using ISO week number)
+2. If a report already exists for this week, overwrite it with the latest version
+3. Confirm: "Report saved to `reports/weekly-retros/YYYY-WNN.md`"
+
+### 6. Monday Framing (if run on Monday)
 If today is Monday, add a section at the top:
 
 ```

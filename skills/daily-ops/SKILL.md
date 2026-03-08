@@ -28,7 +28,7 @@ The morning briefing should be a quick-scan document that takes under 2 minutes 
 1. Google Calendar (today's schedule) — always first
 2. Slack DMs and mentions (last 24h) — urgent communications
 3. Gmail (unread, last 24h) — especially from team and stakeholders
-4. Open todos — carry-forward items
+4. Open todos — carry-forward items (use configured notes app per `config/integrations.md` and `core/notes-integration.md`; skip if `notes_app` is `none`)
 
 ### Signal Detection
 Flag as "needs attention" if:

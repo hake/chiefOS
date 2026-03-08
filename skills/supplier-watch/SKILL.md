@@ -66,5 +66,13 @@ For any Critical issue, offer:
 - "Shall I draft a message to [owner] about this?"
 - "Shall I add this to the risk radar?"
 
+### 5. Archive Report
+
+After presenting, save a copy for future reference:
+
+1. Write the full formatted supplier dashboard to `reports/supplier-watch/YYYY-MM-DD.md` (using today's date)
+2. If a report already exists for today, overwrite it with the latest version
+3. Confirm: "Report saved to `reports/supplier-watch/YYYY-MM-DD.md`"
+
 ## Trigger Phrases
 "supplier watch", "supplier health", "partner status", "any supplier issues", "how are the suppliers"

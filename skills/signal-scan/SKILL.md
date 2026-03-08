@@ -53,5 +53,13 @@ If the sub-agent flagged cross-source patterns, highlight them prominently. Same
 ### 5. Proactive Note
 If any pattern suggests an emerging risk (not yet urgent), say so in one sentence at the bottom: "Worth watching: [brief description]"
 
+### 6. Archive Report
+
+After presenting the scan to the user, save a copy for future reference:
+
+1. Write the full formatted signal scan to `reports/signal-scans/YYYY-MM-DD.md` (using today's date)
+2. If a report already exists for today, overwrite it with the latest version
+3. Confirm: "Report saved to `reports/signal-scans/YYYY-MM-DD.md`"
+
 ## Trigger Phrases
 "signal scan", "anything I should know", "what am I missing", "quick scan", "any fires", "situation check", "morning scan"

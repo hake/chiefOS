@@ -16,6 +16,11 @@ Memory lives in the `memory/` directory. Always consult before responding. Alway
 | `tech-landscape.md` | Systems, integrations, known debt, architectural constraints |
 | `comms-style.md` | Communication preferences, tone notes, things praised/corrected |
 
+## Memory vs Reports
+
+- **Memory** (`memory/`): Living institutional knowledge — updated, corrected, decayed. Entries are mutable and represent the current understanding of people, projects, decisions, etc.
+- **Reports** (`reports/`): Historical snapshots — immutable once written. Each skill run saves its output as a dated report for later reference. Reports are the journal; memory is the brain.
+
 ## When to READ Memory
 - Before every briefing, 1-2-1 prep, or stakeholder communication
 - When any person, project, or vendor/partner is mentioned by name

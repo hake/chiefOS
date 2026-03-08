@@ -157,7 +157,7 @@ When the user says "refresh" or "rescan", re-scan all connected tools to update 
    - Calendar: next 2 weeks + last week
    - Slack: last 7 days, mentions, DMs, key channels
    - Jira: current sprint, blocked tickets, recently updated
-   - Notes: all open todos
+   - Notes (if configured in `config/integrations.md`): all open todos — use `core/notes-integration.md` for tool mapping
    - Confluence: recently modified pages
 
 4. **Compare with existing memory** — identify:

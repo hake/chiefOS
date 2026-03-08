@@ -132,9 +132,12 @@ Say: "Let's configure your tool integrations. chiefOS works with Gmail, Google C
 Ask:
 
 1. **Which of these MCP tools do you have connected?** (Gmail, Google Calendar, Slack, Jira/Confluence, Notes app)
-2. **If Jira**: What are your Jira project keys? (e.g. "PROJ", "TEAM-1")
-3. **If Confluence**: Any specific space keys for OKR pages or team docs?
-4. **If Slack**: Any key channels I should monitor? (e.g. "#engineering", "#team-updates")
+2. **If Notes app**: Which notes app do you use? (Notee, Apple Notes, Notion, Obsidian, or None)
+3. **If Jira**: What are your Jira project keys? (e.g. "PROJ", "TEAM-1")
+4. **If Confluence**: Any specific space keys for OKR pages or team docs?
+5. **If Slack**: Any key channels I should monitor? (e.g. "#engineering", "#team-updates")
+
+Store the notes app choice in `config/integrations.md` as `notes_app`. Refer to `core/notes-integration.md` for the tool mapping per app.
 
 Write to `config/integrations.md`:
 
@@ -148,6 +151,11 @@ Write to `config/integrations.md`:
 - [x] Jira
 - [ ] Confluence
 - [x] Notes app
+
+## Notes Configuration
+- **notes_app**: notee
+  Options: notee | apple-notes | notion | obsidian | none
+  See core/notes-integration.md for tool mapping.
 
 ## Jira Configuration
 - **Project keys**: [KEY1, KEY2]
@@ -190,7 +198,8 @@ Say: "Now I'll scan your connected tools to build initial context. This runs in 
 - Look for: blocked tickets, overdue items, epic names that map to initiatives
 - Seed `memory/projects.md` with discovered initiatives
 
-#### 5e. Notes Scan
+#### 5e. Notes Scan (skip if `notes_app` is `none`)
+Use the tool mapping in `core/notes-integration.md` for the configured notes app:
 - List all notes and search for relevant ones (todos, meeting notes, project notes)
 - Extract: open todo items, project names, people mentioned
 - Look for: any existing context that should be in memory

@@ -28,7 +28,7 @@ Search for:
 - DMs from HR or from anyone discussing candidates
 
 ### 3. Notes Scan
-Search the Notes app for:
+Read `config/integrations.md` for the `notes_app` value. If `none` or not set, skip this step. Otherwise, use the tool mapping in `core/notes-integration.md` to search for:
 - Any notes about open roles or candidate pipeline
 - Interview feedback notes
 - Hiring criteria or JD drafts

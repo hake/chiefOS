@@ -16,6 +16,10 @@ memory/week-*.md
 memory/okr-narrative-*.md
 memory/briefs/
 
+# Report archive (user-generated snapshots)
+reports/**/*.md
+!reports/**/.gitkeep
+
 # Stale pre-plugin layout (superseded by top-level skills/ and agents/)
 .claude/skills/
 .claude/agents/

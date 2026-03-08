@@ -56,7 +56,8 @@ Run ALL of the following in parallel before writing anything. Gather everything 
 - Flag: anything assigned to the user directly, anything with escalation label, P0/P1 priority
 
 ### 5. Open Todos
-- Fetch all open todos from the Notes app
+- Read `config/integrations.md` for the `notes_app` value, then use the tool mapping in `core/notes-integration.md` to fetch all open todos
+- If `notes_app` is `none` or not set, skip this step — suppress the Open Todos section in the output
 - Note which are time-sensitive or connect to today's calendar
 
 ### 6. Memory — baseline context
@@ -227,3 +228,13 @@ The 3 most important things across all sources, ranked by urgency.
 - Every item should have a clear "so what"
 - If a section has nothing to show, say so in one line or suppress it — never pad
 - Total output should take under 3 minutes to read
+
+---
+
+## Archive Report
+
+After presenting the briefing to the user, save a copy for future reference:
+
+1. Write the full formatted briefing to `reports/briefings/YYYY-MM-DD.md` (using today's date)
+2. If a report already exists for today (e.g. user ran `/briefing` twice), overwrite it with the latest version
+3. Confirm: "Report saved to `reports/briefings/YYYY-MM-DD.md`"

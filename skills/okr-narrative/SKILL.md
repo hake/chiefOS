@@ -67,6 +67,14 @@ After drafting, ask: "Any adjustments before I save this? I can change the tone,
 ### 4. Save
 Once approved, save to `memory/okr-narrative-[YYYY-MM].md`
 
+### 5. Archive Report
+
+Also save a copy to the reports archive:
+
+1. Write the narrative to `reports/okr-narratives/YYYY-QN.md` (using quarter, e.g. `2026-Q1.md`)
+2. If a report already exists for this quarter, overwrite it with the latest version
+3. Confirm: "Report also saved to `reports/okr-narratives/YYYY-QN.md`"
+
 ## Writing Style Rules
 - Tell a story — not a list of metrics
 - Be honest about what's behind and why — no spin
