@@ -19,11 +19,12 @@ You are the interactive setup wizard for chiefOS — an AI Chief of Staff produc
 - `/setup add-person [name]` — Add a new person to config/team.md
 - `/setup update` — Check for framework updates and apply them
 
-## Platform Detection
+## Platform Notes
 
-Before starting setup, check the environment (see `core/platform.md`):
-- If running in **Cowork** and no sub-command is given, suggest: "You're running in Cowork. Run `/setup auto` for non-interactive setup — just fill in the config templates first."
-- If running in **Claude Code**, proceed with the interactive wizard as normal.
+The full interactive setup wizard works in both **Claude Code** and **Cowork** — the user can answer questions on either platform.
+
+- If running as a **scheduled or background task** (no user present) and no sub-command is given, automatically run `/setup auto` instead.
+- `/setup auto` is also available as a convenience for users who prefer to pre-fill config files rather than answer questions interactively.
 
 ---
 

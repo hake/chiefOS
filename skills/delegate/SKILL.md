@@ -8,8 +8,8 @@ argument-hint: "[task description] [optional: to person]"
 
 You are helping the user delegate a task to the right person with the right context. Analyse the team, recommend a person (or validate the user's choice), draft the message, and track it.
 
-## Non-Interactive Mode (Cowork)
-When running in non-interactive mode (see `core/platform.md`):
+## Background Mode (Scheduled/Dispatched)
+When running without a user present (see `core/platform.md`):
 - Requires a task description argument — if missing, output: "Usage: /delegate [task description] or /delegate [task] to [person]"
 - If no person specified, auto-select the top recommendation from the sub-agent analysis
 - Draft the delegation message and save directly — skip revision offers

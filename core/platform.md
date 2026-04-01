@@ -15,30 +15,41 @@ Determine the current platform before executing any skill:
    - Standard Claude Code plugin directory structure
 3. **Fallback**: If no Cowork markers are detected, assume Claude Code
 
-## Behavioral Switches
+## Execution Modes
 
-Based on the detected platform, apply these switches:
+chiefOS skills run in two modes, independent of platform:
 
-| Switch | Claude Code | Cowork |
+### Foreground Mode (Default)
+The user is present and can answer questions. This is the normal mode for both Claude Code and Cowork.
+
+- **Interactive**: Ask clarifying questions, offer revision options, request confirmation before writing memory
+- **Full experience**: All skill features work — conversational setup, draft review loops, follow-up offers
+- **Both platforms support this**: The `/setup` wizard, `/comms-draft` revision offers, `/draft-prd` requirements gathering, etc. all work in both Claude Code and Cowork
+
+### Background Mode (Scheduled/Dispatched)
+The skill is running without a user present — triggered by a schedule, dispatched via Claude Dispatch, or invoked as a background sub-agent. No one is there to answer questions.
+
+- **Non-interactive**: Never ask mid-run questions; use defaults or pre-configured parameters
+- **Accept all parameters upfront**: Skills must work with the arguments provided at invocation time
+- **Save output directly**: Write reports to `reports/` without asking for confirmation
+- **Skip revision offers**: Do not offer "Want me to make it shorter/longer?" or similar
+- **Use config data as ground truth**: If information is missing, note the gap in output rather than asking
+
+**How to detect background mode**: The skill is running as a scheduled task, was invoked by Claude Dispatch without a live user session, or is executing as a sub-agent spawned by another skill via the Agent tool.
+
+## Platform-Specific Behavior
+
+| Aspect | Claude Code | Cowork |
 |--------|------------|--------|
-| `interactive_mode` | `true` — ask clarifying questions mid-run | `false` — never ask mid-run; use defaults or pre-configured parameters |
-| `context_budget` | `large` — full scans, verbose output | `conservative` — summarize aggressively, limit scan depth |
-| `memory_path` | `./memory/` relative to project root | `./memory/` first, fall back to `~/.claude/projects/<project>/memory/` |
-| `setup_mode` | Interactive wizard (`/setup`) | Pre-fill config + auto mode (`/setup auto`) |
-
-## Non-Interactive Mode Rules
-
-When `interactive_mode = false` (Cowork or background sub-agent execution):
-
-1. **Never ask questions mid-execution** — if a skill normally asks the user for input, use the default option or infer from config/memory
-2. **Accept all parameters upfront** — skills must work with the arguments provided at invocation time
-3. **Save output directly** — write reports to `reports/` without asking for confirmation
-4. **Skip revision offers** — do not offer "Want me to make it shorter/longer?" or similar
-5. **Use config data as ground truth** — if information is missing, note the gap in output rather than asking
+| **Interaction** | Foreground (interactive) | Foreground (interactive) |
+| **Context budget** | `large` — full scans, verbose output | `conservative` — 200K window, summarize more aggressively |
+| **Memory path** | `./memory/` relative to project root | `./memory/` first, fall back to `~/.claude/projects/<project>/memory/` |
+| **MCP config** | `config/integrations.md` at runtime | `claude_desktop_config.json` + `config/integrations.md` for chiefOS settings |
+| **Scheduling** | Via cron or Claude Code headless API | Via Claude Dispatch (background mode applies) |
 
 ## Context Budget Guidelines (Cowork)
 
-When `context_budget = conservative`, skills should:
+Cowork has a 200K context window (vs 1M in Claude Code). When running in Cowork, skills should:
 
 - **MCP scan results**: Limit to top 10 items per source (Gmail, Slack, Jira, Calendar)
 - **Memory reads**: For entries older than 7 days, include only the subject line and date — not full details
@@ -48,17 +59,17 @@ When `context_budget = conservative`, skills should:
 
 ## How Skills Should Reference This Module
 
-Every skill that has interactive elements should include a "Non-Interactive Mode" section near the top. The pattern is:
+Skills that have interactive elements AND may be run as scheduled/background tasks should include a "Background Mode" section near the top:
 
 ```markdown
-## Non-Interactive Mode (Cowork)
-When running in non-interactive mode (see `core/platform.md`):
+## Background Mode (Scheduled/Dispatched)
+When running without a user present (see `core/platform.md`):
 - [specific behavior changes for this skill]
 - Save output directly to reports/ without asking
 - Use defaults for any normally-interactive choices
 ```
 
-Skills that are fully autonomous (no mid-run questions) do not need this section.
+This section is NOT triggered by being in Cowork — it is triggered by the absence of a live user session.
 
 ## MCP Integration Notes
 

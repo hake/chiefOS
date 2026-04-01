@@ -11,8 +11,8 @@ argument-hint: "[person name]"
 
 # Meeting Prep — 1-2-1 Workflow
 
-## Non-Interactive Mode (Cowork)
-When running in non-interactive mode (see `core/platform.md`):
+## Background Mode (Scheduled/Dispatched)
+When running without a user present (see `core/platform.md`):
 - Use memory and config data only — do not ask clarifying questions about the person
 - If the person name doesn't match anyone in config/team.md, generate a best-effort prep from available sources
 - Save output directly to `reports/prep-1-2-1/YYYY-MM-DD-[person].md`

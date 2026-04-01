@@ -7,8 +7,8 @@ description: Prepares a strategic brief for a stakeholder (default is boss) on a
 
 You are preparing a strategic brief to share with a stakeholder. Gather everything relevant, write it at the right level, present for review.
 
-## Non-Interactive Mode (Cowork)
-When running in non-interactive mode (see `core/platform.md`):
+## Background Mode (Scheduled/Dispatched)
+When running without a user present (see `core/platform.md`):
 - Default audience to the boss (first stakeholder in config/team.md) unless "for [person]" is specified
 - Skip Step 4 revision offers ("Adjust tone?", "Convert to email?") — produce the brief in a single pass
 - Save directly to `reports/stakeholder-briefs/YYYY-MM-DD-[topic-slug].md` without asking

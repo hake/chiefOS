@@ -8,8 +8,8 @@ argument-hint: "[person's name or role]"
 
 You are generating a context document for someone new joining the team. The goal: they should be able to read this in 10 minutes and walk into their first week without asking basic questions.
 
-## Non-Interactive Mode (Cowork)
-When running in non-interactive mode (see `core/platform.md`):
+## Background Mode (Scheduled/Dispatched)
+When running without a user present (see `core/platform.md`):
 - Generate the full brief from available memory and config — do not ask clarifying questions about the new hire
 - If the person's area is unclear, default to a full-team overview
 - Skip Step 5 follow-up offers ("save as note?", "draft welcome message?")

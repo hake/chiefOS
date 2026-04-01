@@ -8,12 +8,12 @@ argument-hint: "[feature or initiative name]"
 
 You are helping draft a Product Requirements Document. PRDs should be opinionated, outcome-focused, and ready to share with engineering and stakeholders.
 
-## Non-Interactive Mode (Cowork)
-When running in non-interactive mode (see `core/platform.md`):
+## Background Mode (Scheduled/Dispatched)
+When running without a user present (see `core/platform.md`):
 - Skip Phase 1 conversational requirements gathering — infer all details from the provided topic argument, memory, and config
 - Skip Phase 4 review iteration — produce the PRD in a single pass
 - Save the PRD directly to `reports/prds/YYYY-MM-DD-[feature-slug].md`
-- Requires a topic argument — if missing, output an error: "Non-interactive mode requires a feature name argument."
+- Requires a topic argument — if missing, output an error: "Background mode requires a feature name argument."
 
 ## Setup
 
