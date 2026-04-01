@@ -5,7 +5,7 @@ set -euo pipefail
 # Usage: ./install.sh [target-directory]
 # Example: ./install.sh ~/chiefOS
 
-VERSION="0.1.0"
+VERSION="0.2.0"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # ---------- helpers ----------
@@ -14,6 +14,13 @@ info()  { printf "\033[1;34m→\033[0m %s\n" "$1"; }
 ok()    { printf "\033[1;32m✓\033[0m %s\n" "$1"; }
 warn()  { printf "\033[1;33m!\033[0m %s\n" "$1"; }
 fail()  { printf "\033[1;31m✗\033[0m %s\n" "$1" >&2; exit 1; }
+
+# ---------- detect platform ----------
+
+PLATFORM="claude-code"
+if [[ -d "$HOME/.claude/projects" ]] && [[ -f "$HOME/.claude/claude_desktop_config.json" || -d "/tmp/claude-desktop" ]]; then
+  PLATFORM="cowork"
+fi
 
 # ---------- resolve target ----------
 
@@ -103,7 +110,7 @@ ok "memory-templates/ installed"
 # ---------- user data (only on fresh install) ----------
 
 if [[ "$MODE" == "install" ]]; then
-  # Config directory with example files
+  # Config directory with example and template files
   info "Creating config/ with example files..."
   mkdir -p "$TARGET/config"
   for example in "$SCRIPT_DIR/config/"*.example.md; do
@@ -111,7 +118,12 @@ if [[ "$MODE" == "install" ]]; then
       cp "$example" "$TARGET/config/"
     fi
   done
-  ok "config/ created with example files"
+  for template in "$SCRIPT_DIR/config/"*.template.md; do
+    if [[ -f "$template" ]]; then
+      cp "$template" "$TARGET/config/"
+    fi
+  done
+  ok "config/ created with example and template files"
 
   # Empty memory directory
   info "Creating memory/ directory..."
@@ -160,15 +172,32 @@ if [[ "$MODE" == "install" ]]; then
   echo "  │  Installation complete!             │"
   echo "  └─────────────────────────────────────┘"
   echo ""
-  echo "  Next steps:"
-  echo ""
-  echo "    cd $TARGET"
-  echo "    # Open Claude Code in this directory"
-  echo "    /setup"
-  echo ""
-  echo "  The /setup wizard will ask about your"
-  echo "  team, role, and tools — then generate"
-  echo "  your personalised CLAUDE.md."
+  if [[ "$PLATFORM" == "cowork" ]]; then
+    echo "  Detected: Claude Cowork"
+    echo ""
+    echo "  Next steps:"
+    echo ""
+    echo "    1. Fill in your config files:"
+    echo "       cp config/profile.template.md config/profile.md"
+    echo "       cp config/team.template.md config/team.md"
+    echo "       cp config/domain.template.md config/domain.md"
+    echo "       cp config/integrations.template.md config/integrations.md"
+    echo ""
+    echo "    2. Edit each config file with your details"
+    echo ""
+    echo "    3. Run: /setup auto"
+    echo ""
+  else
+    echo "  Next steps:"
+    echo ""
+    echo "    cd $TARGET"
+    echo "    # Open Claude Code in this directory"
+    echo "    /setup"
+    echo ""
+    echo "  The /setup wizard will ask about your"
+    echo "  team, role, and tools — then generate"
+    echo "  your personalised CLAUDE.md."
+  fi
 else
   echo "  │  Update complete! (v${VERSION})        │"
   echo "  └─────────────────────────────────────┘"

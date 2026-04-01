@@ -2,6 +2,15 @@
 
 Memory lives in the `memory/` directory. Always consult before responding. Always update when you learn something durable.
 
+## Memory Path Resolution (Dual-Mode)
+
+chiefOS runs on both Claude Code and Cowork (see `core/platform.md`). Memory paths are resolved as follows:
+
+- **Claude Code**: Memory lives at `./memory/` relative to the project root. This is the only path.
+- **Cowork**: Memory lives at `./memory/` in the shared folder. If running within a Cowork Project, memory may also persist at `~/.claude/projects/<project>/memory/`.
+- **Resolution order**: Always read from `./memory/` first. If `./memory/` is empty or missing and a Cowork Projects memory path exists, fall back to that path.
+- **Write behavior**: Always write to `./memory/` (the shared folder). This ensures memory is visible to the user and persists within the project scope.
+
 ## Memory Files
 
 | File | Contents |

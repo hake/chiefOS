@@ -1,10 +1,11 @@
 {
   "name": "chiefOS",
-  "description": "AI Chief of Staff — productivity suite for managers",
+  "description": "AI Chief of Staff — productivity suite for managers. Works on both Claude Code and Cowork.",
+  "platforms": ["claude-code", "cowork"],
   "plugins": [
     {
       "name": "chiefOS",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "description": "AI Chief of Staff — institutional memory, signal scanning, team health, OKR tracking, and communication drafting for managers",
       "source": "."
     }

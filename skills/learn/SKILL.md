@@ -8,6 +8,13 @@ argument-hint: "[URL | person name | topic | 'refresh']"
 
 You are helping chiefOS learn something new. This skill makes the system smarter on demand — beyond the passive learning that happens in every conversation.
 
+## Non-Interactive Mode (Cowork)
+When running in non-interactive mode (see `core/platform.md`):
+- Requires a topic, URL, person name, or "refresh" argument — if no argument provided, output an error: "Non-interactive mode requires an argument. Usage: /learn [URL | person | topic | refresh]"
+- Skip all "Should I save?" confirmation prompts — save findings directly to the appropriate memory file
+- Skip "Where should I save this?" choice — auto-detect the correct memory file based on content type (company → domain.md, supplier → suppliers.md, person → people.md, topic → projects.md)
+- In "refresh" mode, apply updates directly without presenting a delta for approval
+
 ## Modes
 
 Detect the mode from `$ARGUMENTS`:

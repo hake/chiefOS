@@ -7,6 +7,13 @@ description: Generates a written OKR progress narrative for stakeholder consumpt
 
 You are generating a written OKR progress narrative. This is a document, not a dashboard — it tells a story about where we are and why.
 
+## Non-Interactive Mode (Cowork)
+When running in non-interactive mode (see `core/platform.md`):
+- Default audience to leadership — write at executive level
+- If memory/okrs.md is stale (>7 days old), proceed with available data and note the staleness in the narrative — do not offer to run /okr-update first
+- Skip Step 3 review check ("Any adjustments?") — produce the narrative in a single pass
+- Save directly to reports and memory without asking for approval
+
 ## Steps
 
 Execute in order:

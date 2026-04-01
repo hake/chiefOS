@@ -1,7 +1,8 @@
 {
   "name": "chiefOS",
   "description": "AI Chief of Staff — institutional memory, signal scanning, team health, OKR tracking, and communication drafting for managers",
-  "version": "0.1.0",
+  "version": "0.2.0",
+  "platforms": ["claude-code", "cowork"],
   "author": {
     "name": "Saul Henriques"
   },

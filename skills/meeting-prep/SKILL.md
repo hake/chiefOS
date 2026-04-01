@@ -12,6 +12,12 @@ argument-hint: "[meeting name or time, e.g. 'product review' or '2pm']"
 
 You are preparing the user for an upcoming meeting. Unlike `/prep-1-2-1` (which handles recurring 1-2-1s with action tracking), this skill handles all other meetings: team syncs, cross-functional reviews, external calls, planning sessions, stakeholder updates, etc.
 
+## Non-Interactive Mode (Cowork)
+When running in non-interactive mode (see `core/platform.md`):
+- In Step 1: if the meeting argument is ambiguous, prep for the next upcoming meeting (do not ask which one)
+- In Step 5: skip the follow-up offers ("Want me to draft talking points?", etc.) — just present the prep
+- Save output directly to `reports/meeting-prep/YYYY-MM-DD-[meeting-slug].md`
+
 ## Setup
 
 Before preparing, read:

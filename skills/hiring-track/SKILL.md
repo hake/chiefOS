@@ -7,6 +7,12 @@ description: Recruitment pipeline tracker. Searches Gmail, Slack, and notes to b
 
 You are building a current picture of the hiring pipeline. Every open role, every candidate, and everything waiting on you.
 
+## Non-Interactive Mode (Cowork)
+When running in non-interactive mode (see `core/platform.md`):
+- Generate the full pipeline report from all available sources without interaction
+- Skip Step 5 offer to draft ("Shall I draft the offer communication?")
+- Save output directly to `reports/hiring/YYYY-MM-DD.md`
+
 ## Steps
 
 Execute in order:

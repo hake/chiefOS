@@ -13,10 +13,17 @@ You are the interactive setup wizard for chiefOS — an AI Chief of Staff produc
 ## Sub-Commands
 
 - `/setup` — Full interactive onboarding (first-time setup)
+- `/setup auto` — Non-interactive setup for Cowork (reads pre-filled config files)
 - `/setup regenerate` — Rebuild CLAUDE.md from existing config files
 - `/setup check` — Validate current config and report any issues
 - `/setup add-person [name]` — Add a new person to config/team.md
 - `/setup update` — Check for framework updates and apply them
+
+## Platform Detection
+
+Before starting setup, check the environment (see `core/platform.md`):
+- If running in **Cowork** and no sub-command is given, suggest: "You're running in Cowork. Run `/setup auto` for non-interactive setup — just fill in the config templates first."
+- If running in **Claude Code**, proceed with the interactive wizard as normal.
 
 ---
 
@@ -245,6 +252,7 @@ Assemble CLAUDE.md by reading and combining:
 
 1. **Core modules** (read in order, include verbatim):
    - `core/persona.md`
+   - `core/platform.md`
    - `core/memory-system.md`
    - `core/learning-engine.md`
    - `core/operating-principles.md`
@@ -360,3 +368,74 @@ Re-run the Phase 5 context scan on all connected tools. Useful when:
 3. Present NEW findings only (skip what's already in memory)
 4. Ask for confirmation before updating memory
 5. Report: "[X] new entries added, [Y] entries updated, [Z] stale entries flagged"
+
+---
+
+## Sub-Command: `/setup auto` (Cowork Non-Interactive Mode)
+
+This mode is designed for Claude Cowork where interactive prompts are not available. The user pre-fills config files before running this command.
+
+### Prerequisites
+
+The user must have filled in these files before running `/setup auto`:
+- `config/profile.md` (copy from `config/profile.template.md`)
+- `config/team.md` (copy from `config/team.template.md`)
+- `config/domain.md` (copy from `config/domain.template.md`)
+- `config/integrations.md` (copy from `config/integrations.template.md`)
+
+### Auto Setup Flow
+
+#### Step 1: Validate Config Files
+Read all 4 config files. For each file:
+- If the file exists and contains real data (not just placeholders): proceed
+- If the file is missing or still has `[placeholder]` values: report which files need filling and stop
+
+Say:
+```
+Running chiefOS auto-setup...
+✓ config/profile.md — loaded
+✓ config/team.md — loaded ([X] direct reports, [Y] stakeholders)
+✓ config/domain.md — loaded
+✓ config/integrations.md — loaded ([list of enabled tools])
+```
+
+#### Step 2: Company Research (Automatic)
+If `config/profile.md` contains a company website:
+- Run the same Phase 2 company research (crawl website pages in parallel)
+- Merge findings into `config/domain.md` automatically — do not ask for confirmation
+- Append, do not overwrite user-provided domain data
+
+#### Step 3: Context Scan (Automatic)
+Run the same Phase 5 context scan based on `config/integrations.md`:
+- Scan all configured MCP tools in parallel
+- Apply context budget guidelines from `core/platform.md` (limit results per source)
+- Save all findings directly to memory files — do not ask for confirmation
+
+#### Step 4: Generate CLAUDE.md
+Run the same Phase 6 CLAUDE.md generation, including:
+- Reference to `core/platform.md` in the core modules list
+- All core modules, user config, skills listing, and agents listing
+
+#### Step 5: Seed Memory Files
+Run the same Phase 7 memory seeding — create all memory files from config + scan results.
+
+#### Step 6: Report
+Say:
+```
+chiefOS auto-setup complete.
+
+Configuration:
+- Profile: [Name], [Title] at [Company]
+- Team: [X] direct reports, [Y] stakeholders
+- Tools: [list of enabled integrations]
+
+Memory seeded:
+- [X] people entries
+- [X] project entries
+- [X] recurring meetings
+- [X] supplier entries
+
+CLAUDE.md generated. You're ready to go.
+
+Try: /briefing, /signal-scan, /team-pulse
+```

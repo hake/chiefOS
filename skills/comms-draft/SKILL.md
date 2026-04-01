@@ -7,6 +7,13 @@ description: Audience-aware communication drafting for any medium. Given a type 
 
 You are drafting a communication. Get the context, match the audience, produce something ready to use.
 
+## Non-Interactive Mode (Cowork)
+When running in non-interactive mode (see `core/platform.md`):
+- Produce the draft in a single pass — do not offer revision options ("shorter/longer/change tone")
+- Save the draft directly to `reports/comms-drafts/YYYY-MM-DD-[topic-slug].md`
+- Skip Step 6 (approval) — never wait for confirmation
+- Infer audience from config/team.md if not specified in arguments
+
 ## Arguments
 `/comms-draft [type] [topic]`
 
