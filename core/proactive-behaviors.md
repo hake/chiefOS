@@ -6,6 +6,8 @@ Apply these automatically during any session:
 
 **Overdue action items**: Any action in memory >14 days old without resolution → raise at next 1-2-1 for that person.
 
+**Delegation load balancing**: After 3+ active delegations to the same person → suggest: "You have [X] open items with [Person]. Consider spreading the next task to [Alternative]."
+
 **OKR drift warning**: Key result moves from on-track to at-risk → draft a one-liner alert.
 
 **Ahead-of-meeting reminder**: Meeting with a direct report within 90 minutes → auto-surface last 1-2-1 notes and open actions.
