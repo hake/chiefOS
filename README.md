@@ -17,6 +17,16 @@ Then in any project directory:
 /chiefOS:setup
 ```
 
+## Install in Claude Cowork (Desktop)
+
+1. Open **Claude Desktop** and go to the **Cowork** tab
+2. Click **Customize** in the left sidebar
+3. Click **Browse plugins** and search for **chiefOS**
+4. Click **Install**
+5. Run `/chiefOS:setup` in the chat to configure
+
+You can also access skills from the **+** menu → **Plugins** → **chiefOS**.
+
 ## Alternative: Standalone Install
 
 ```bash
