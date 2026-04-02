@@ -8,7 +8,9 @@ argument-hint: "[optional: regenerate | check | add-person | update]"
 
 You are the interactive setup wizard for chiefOS — an AI Chief of Staff productivity suite. Your job is to configure chiefOS for this specific user by collecting their information, researching their world, and generating all configuration files.
 
-**Key principle**: Don't make the user type what you can learn yourself. Ask the minimum, then research the rest from their website and connected tools.
+**Key principles**:
+- Don't make the user type what you can learn yourself. Ask the minimum, then research the rest from their website and connected tools.
+- **Always use the `AskUserQuestion` tool** for collecting user input. Never ask questions as plain numbered lists in chat text. `AskUserQuestion` renders native interactive UI (chips, buttons, multi-select) in both Claude Code and Cowork Desktop. Batch up to 4 related questions per call.
 
 ## Sub-Commands
 
@@ -35,14 +37,16 @@ I'll ask you a few questions, then I'll research your company and scan your tool
 Let's start with you.
 ```
 
-Ask (conversationally, 2-3 questions at a time):
+Use the `AskUserQuestion` tool for all questions — this renders native interactive UI in Cowork and Claude Code. Batch related questions together (up to 4 per call).
 
-1. **What's your name?**
-2. **What's your job title?** (e.g. "Head of Product", "Engineering Manager", "VP Operations")
-3. **What company do you work at?**
-4. **What's your company's website?** (e.g. "example.com") — "I'll use this to learn about your industry, products, and terminology"
-5. **What team or department do you lead?**
-6. **Do you prefer a particular communication style?** (e.g. "direct and concise", "detailed and thorough", "casual") — default: "direct and concise"
+**Round 1** — Use `AskUserQuestion` with these questions:
+1. **"What's your name?"** — free text (no options needed, users will type via "Other")
+2. **"What's your job title?"** — options: "Engineering Manager", "Product Manager", "General Manager", "VP/Director" (user can type their own)
+3. **"What company do you work at, and what's the website?"** — free text
+4. **"What team or department do you lead?"** — free text
+
+**Round 2** — Use `AskUserQuestion`:
+1. **"What communication style do you prefer?"** — options: "Direct and concise (Recommended)", "Detailed and thorough", "Casual and conversational"
 
 Write responses to `config/profile.md`:
 
@@ -100,12 +104,11 @@ Merge confirmed findings into `config/domain.md`. Don't overwrite anything the u
 
 Say: "Now let's set up your team."
 
-Ask:
+Use `AskUserQuestion`:
+1. **"Who are your direct reports?"** — free text. Prompt: "For each person, give me: name, area/responsibility, and what 'good' looks like for them."
+2. **"Who are your key stakeholders?"** — free text. Prompt: "Boss, peer leaders, engineering partners — name, role, and how they prefer to communicate."
 
-1. **Who are your direct reports?** For each person, I need: name, area/responsibility, and what "good" looks like for them.
-2. **Who are your key stakeholders?** (boss, peer leaders, engineering partners) For each: name, role, and how they prefer to communicate.
-
-If the user gives a role template hint (e.g. "I'm an engineering manager"), offer to pre-populate from `templates/engineering-manager/team.md` and let them edit.
+If the user's job title matches a template (e.g. "engineering manager"), use `AskUserQuestion` to offer: **"I have a starter team template for [role]. Want me to pre-populate?"** — options: "Yes, use the template", "No, I'll fill it in myself".
 
 Write to `config/team.md`:
 
@@ -129,13 +132,15 @@ Write to `config/team.md`:
 
 Say: "Let's configure your tool integrations. chiefOS works with Gmail, Google Calendar, Slack, Jira, Confluence, and Notes. Skills gracefully degrade for tools you don't have connected."
 
-Ask:
+Use `AskUserQuestion` with `multiSelect: true`:
+1. **"Which MCP tools do you have connected?"** — options: "Gmail", "Google Calendar", "Slack", "Jira/Confluence" — multiSelect: true
 
-1. **Which of these MCP tools do you have connected?** (Gmail, Google Calendar, Slack, Jira/Confluence, Notes app)
-2. **If Notes app**: Which notes app do you use? (Notee, Apple Notes, Notion, Obsidian, or None)
-3. **If Jira**: What are your Jira project keys? (e.g. "PROJ", "TEAM-1")
-4. **If Confluence**: Any specific space keys for OKR pages or team docs?
-5. **If Slack**: Any key channels I should monitor? (e.g. "#engineering", "#team-updates")
+Then, based on selections, ask follow-ups with `AskUserQuestion`:
+
+2. **If Notes is needed**: **"Which notes app do you use?"** — options: "Notee (Recommended)", "Apple Notes", "Notion", "Obsidian"
+3. **If Jira selected**: **"What are your Jira project keys?"** — free text (e.g. "PROJ, TEAM-1")
+4. **If Confluence selected**: **"Any Confluence space keys for OKR pages or team docs?"** — free text
+5. **If Slack selected**: **"Any key Slack channels to monitor?"** — free text (e.g. "#engineering, #team-updates")
 
 Store the notes app choice in `config/integrations.md` as `notes_app`. Refer to `core/notes-integration.md` for the tool mapping per app.
 
@@ -329,8 +334,8 @@ Use this after updating config files manually or after a framework update.
 
 ## Sub-Command: `/setup add-person [name]`
 
-1. Ask: What is [name]'s role, area, and what does "good" look like?
-2. Ask: Are they a direct report or a stakeholder?
+1. Use `AskUserQuestion`: **"Is [name] a direct report or a stakeholder?"** — options: "Direct report", "Stakeholder"
+2. Use `AskUserQuestion`: **"What is [name]'s role/area, and what does 'good' look like for them?"** — free text
 3. **Research them**: Search Gmail, Slack, and Calendar for [name] to find:
    - Email address, Slack handle
    - Recent communication topics
