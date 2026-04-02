@@ -9,23 +9,33 @@ Your AI Chief of Staff. A productivity suite for managers that gives you institu
 /plugin marketplace add saulhenriques/chiefOS
 
 # Install
-/plugin install chiefOS@saulhenriques/chiefOS
+/plugin install chief-os@saulhenriques/chiefOS
 ```
 
 Then in any project directory:
 ```
-/chiefOS:setup
+/chief-os:setup
 ```
 
 ## Install in Claude Cowork (Desktop)
 
+### From the marketplace
+
 1. Open **Claude Desktop** and go to the **Cowork** tab
 2. Click **Customize** in the left sidebar
-3. Click **Browse plugins** and search for **chiefOS**
+3. Click **Browse plugins** and search for **chief-os**
 4. Click **Install**
-5. Run `/chiefOS:setup` in the chat to configure
+5. Run `/chief-os:setup` in the chat to configure
 
-You can also access skills from the **+** menu → **Plugins** → **chiefOS**.
+### Manual upload
+
+1. Download the latest release ZIP from [GitHub](https://github.com/saulhenriques/chiefOS/releases) (or clone and zip the repo)
+2. Open **Claude Desktop** → **Cowork** tab
+3. Click **Customize** → **Browse plugins** → click the **"+"** button
+4. Select the ZIP file
+5. Once uploaded, run `/chief-os:setup` to configure
+
+You can also access skills from the **+** menu → **Plugins** → **chief-os**.
 
 ## Alternative: Standalone Install
 
