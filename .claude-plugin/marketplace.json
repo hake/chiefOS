@@ -1,9 +1,9 @@
 {
-  "name": "chiefOS",
+  "name": "chief-os",
   "description": "AI Chief of Staff — productivity suite for managers",
   "plugins": [
     {
-      "name": "chiefOS",
+      "name": "chief-os",
       "version": "0.1.0",
       "description": "AI Chief of Staff — institutional memory, signal scanning, team health, OKR tracking, and communication drafting for managers",
       "source": "."
